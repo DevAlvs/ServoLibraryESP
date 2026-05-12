@@ -1,18 +1,18 @@
 {
-    "name": "motor",
-    "version": "0.0.1",
-    "description": "This is dc motor, stepper motor, steering gear library.",
-    "license": "GNU",
-    "dependencies": {
-        "core": "*"
-    },
-    "files": [
-        "README.md",
-        "main.ts",
-        "_locales/zh/motor-strings.json"
-    ],
-    "testFiles": [
-        "test.ts"
-    ],
-    "public": false
+  "name": "Servo Library",
+  "version": "0.0.1",
+  "description": "Librería para controlar motores DC, motores paso a paso y servos. Hecho por Álvaro Díaz",
+  "license": "GNU",
+  "dependencies": {
+    "core": "*"
+  },
+  "files": [
+    "README.md",
+    "main.ts",
+    "_locales/zh/motor-strings.json"
+  ],
+  "testFiles": [
+    "test.ts"
+  ],
+  "public": false
 }
