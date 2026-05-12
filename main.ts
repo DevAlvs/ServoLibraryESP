@@ -12,11 +12,11 @@
  * @version  V1.0.1
  * @date  2018-03-20
  */
- 
+
 /**
- *This is DFRobot:motor user motor and steering control function.
+ * Librería para controlar motores DC, motores paso a paso y servos.
  */
-//% weight=10 color=#DF6721 icon="\uf013" block="DF-Driver"
+//% weight=10 color=#DF6721 icon="\uf013" block="Servo Library"
 namespace motor {
     const PCA9685_ADDRESS = 0x40
     const MODE1 = 0x00
@@ -33,32 +33,32 @@ namespace motor {
     const ALL_LED_ON_H = 0xFB
     const ALL_LED_OFF_L = 0xFC
     const ALL_LED_OFF_H = 0xFD
- 
+
     const STP_CHA_L = 2047
     const STP_CHA_H = 4095
- 
+
     const STP_CHB_L = 1
     const STP_CHB_H = 2047
- 
+
     const STP_CHC_L = 1023
     const STP_CHC_H = 3071
- 
+
     const STP_CHD_L = 3071
     const STP_CHD_H = 1023
- 
- 
+
+
     const BYG_CHA_L = 3071
     const BYG_CHA_H = 1023
- 
+
     const BYG_CHB_L = 1023
     const BYG_CHB_H = 3071
- 
+
     const BYG_CHC_L = 4095
     const BYG_CHC_H = 2047
- 
+
     const BYG_CHD_L = 2047
     const BYG_CHD_H = 4095
- 
+
     /**
      * The user can choose the step motor model.
      */
@@ -68,7 +68,7 @@ namespace motor {
         //% block="28"
         Ste2 = 2
     }
- 
+
     /**
      * The user can select the 8 steering gear controller.
      */
@@ -82,7 +82,7 @@ namespace motor {
         S7 = 0x02,
         S8 = 0x01
     }
- 
+
     /**
      * The user selects the 4-way dc motor.
      */
@@ -92,7 +92,7 @@ namespace motor {
         M3 = 0x3,
         M4 = 0x4
     }
- 
+
     /**
      * The user defines the motor rotation direction.
      */
@@ -102,7 +102,7 @@ namespace motor {
         //% blockId="CCW" block="Antihorario"
         CCW = -1,
     }
- 
+
     /**
      * The user can select a two-path stepper motor controller.
      */
@@ -110,36 +110,36 @@ namespace motor {
         M1_M2 = 0x1,
         M3_M4 = 0x2
     }
- 
- 
- 
+
+
+
     let initialized = false
- 
+
     function i2cWrite(addr: number, reg: number, value: number) {
         let buf = pins.createBuffer(2)
         buf[0] = reg
         buf[1] = value
         pins.i2cWriteBuffer(addr, buf)
     }
- 
+
     function i2cCmd(addr: number, value: number) {
         let buf = pins.createBuffer(1)
         buf[0] = value
         pins.i2cWriteBuffer(addr, buf)
     }
- 
+
     function i2cRead(addr: number, reg: number) {
         pins.i2cWriteNumber(addr, reg, NumberFormat.UInt8BE);
         let val = pins.i2cReadNumber(addr, NumberFormat.UInt8BE);
         return val;
     }
- 
+
     function initPCA9685(): void {
         i2cWrite(PCA9685_ADDRESS, MODE1, 0x00)
         setFreq(50);
         initialized = true
     }
- 
+
     function setFreq(freq: number): void {
         // Constrain the frequency
         let prescaleval = 25000000;
@@ -155,11 +155,11 @@ namespace motor {
         control.waitMicros(5000);
         i2cWrite(PCA9685_ADDRESS, MODE1, oldmode | 0xa1);
     }
- 
+
     function setPwm(channel: number, on: number, off: number): void {
         if (channel < 0 || channel > 15)
             return;
- 
+
         let buf = pins.createBuffer(5);
         buf[0] = LED0_ON_L + 4 * channel;
         buf[1] = on & 0xff;
@@ -168,8 +168,8 @@ namespace motor {
         buf[4] = (off >> 8) & 0xff;
         pins.i2cWriteBuffer(PCA9685_ADDRESS, buf);
     }
- 
- 
+
+
     function setStepper_28(index: number, dir: boolean): void {
         if (index == 1) {
             if (dir) {
@@ -197,8 +197,8 @@ namespace motor {
             }
         }
     }
- 
- 
+
+
     function setStepper_42(index: number, dir: boolean): void {
         if (index == 1) {
             if (dir) {
@@ -226,12 +226,10 @@ namespace motor {
             }
         }
     }
- 
- 
+
+
     /**
-	 * Steering gear control function.
-     * S1~S8.
-     * 0°~180°.
+	 * Controla un servo. S1~S8. Rango: 0°~180°.
 	*/
     //% blockId=motor_servo block="Servo|%index|grados|%grados"
     //% weight=100
@@ -246,11 +244,9 @@ namespace motor {
         let value = v_us * 4096 / 20000
         setPwm(index + 7, 0, value)
     }
- 
+
     /**
-	 * Execute a motor
-     * M1~M4.
-     * speed(0~255).
+	 * Controla un motor DC. M1~M4. Velocidad: 0~255.
     */
     //% weight=90
     //% blockId=motor_MotorCorrer block="Motor|%index|direccion|%Direccion|velocidad|%velocidad"
@@ -280,10 +276,9 @@ namespace motor {
             setPwm(pn, 0, -velocidad)
         }
     }
- 
+
     /**
-	 * Execute a 42BYGH1861A-C step motor(Degree).
-     * M1_M2/M3_M4.
+	 * Controla un motor paso a paso 42BYGH por grados. M1_M2 / M3_M4.
     */
     //% weight=80
     //% blockId=motor_pasosGrados_42 block="Motor Paso 42|%index|direccion|%direccion|grados|%grados"
@@ -307,10 +302,9 @@ namespace motor {
             motorParar(4)
         }
     }
- 
+
     /**
-	 * Execute a 42BYGH1861A-C step motor(Turn).
-     * M1_M2/M3_M4.
+	 * Controla un motor paso a paso 42BYGH por vueltas. M1_M2 / M3_M4.
     */
     //% weight=70
     //% blockId=motor_pasosVueltas_42 block="Motor Paso 42|%index|direccion|%direccion|vueltas|%vueltas"
@@ -323,10 +317,9 @@ namespace motor {
         let grados = vueltas * 360;
         pasosGrados_42(index, direccion, grados);
     }
- 
+
     /**
-	 * Execute a 28BYJ-48 step motor(Degree).
-     * M1_M2/M3_M4.
+	 * Controla un motor paso a paso 28BYJ-48 por grados. M1_M2 / M3_M4.
     */
     //% weight=60
     //% blockId=motor_pasosGrados_28 block="Motor Paso 28|%index|direccion|%direccion|grados|%grados"
@@ -352,10 +345,9 @@ namespace motor {
             motorParar(4)
         }
     }
- 
+
     /**
-	 * Execute a 28BYJ-48 step motor(Turn).
-     * M1_M2/M3_M4.
+	 * Controla un motor paso a paso 28BYJ-48 por vueltas. M1_M2 / M3_M4.
     */
     //% weight=50
     //% blockId=motor_pasosVueltas_28 block="Motor Paso 28|%index|direccion|%direccion|vueltas|%vueltas"
@@ -368,9 +360,9 @@ namespace motor {
         let grados = vueltas * 360;
         pasosGrados_28(index, direccion, grados);
     }
- 
+
     /**
-	 * Two parallel stepper motors are executed simultaneously(DegreeDual).
+	 * Controla dos motores paso a paso simultáneamente por grados.
     */
     //% weight=40
     //% blockId=motor_pasosGradosDual_42 block="Doble Motor Paso %motorPaso|M1_M2 dir %direccion1|grados %grados1|M3_M4 dir %direccion2|grados %grados2"
@@ -385,7 +377,7 @@ namespace motor {
         let tiempo2 = 0;
         let Grados1 = Math.abs(grados1);
         let Grados2 = Math.abs(grados2);
- 
+
         if (motorPaso == 1) {  // 42 stepper
             if (Grados1 == 0 && Grados2 == 0) {
                 setStepper_42(0x01, direccion1 > 0);
@@ -460,9 +452,9 @@ namespace motor {
             //
         }
     }
- 
+
     /**
-	 * Two parallel stepper motors are executed simultaneously(Turn).
+	 * Controla dos motores paso a paso simultáneamente por vueltas.
     */
     //% weight=30
     //% blockId=motor_pasosVueltasDual_42 block="Doble Motor Paso %motorPaso|M1_M2 dir %direccion1|vueltas %vueltas1|M3_M4 dir %direccion2|vueltas %vueltas2"
@@ -475,19 +467,19 @@ namespace motor {
         }
         let grados1 = vueltas1 * 360;
         let grados2 = vueltas2 * 360;
- 
+
         if (motorPaso == 1) {
             pasosGradosDual_42(motorPaso, direccion1, grados1, direccion2, grados2);
         } else if (motorPaso == 2) {
             pasosGradosDual_42(motorPaso, direccion1, grados1, direccion2, grados2);
         } else {
- 
+
         }
- 
+
     }
- 
+
     /**
-	 * Stop the dc motor.
+	 * Para un motor DC.
     */
     //% weight=20
     //% blockId=motor_motorParar block="Parar Motor|%index"
@@ -496,9 +488,9 @@ namespace motor {
         setPwm((4 - index) * 2, 0, 0);
         setPwm((4 - index) * 2 + 1, 0, 0);
     }
- 
+
     /**
-	 * Stop all motors
+	 * Para todos los motores.
     */
     //% weight=10
     //% blockId=motor_pararTodo block="Parar Todo"
