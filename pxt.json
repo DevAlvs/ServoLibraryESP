@@ -8,8 +8,7 @@
   },
   "files": [
     "README.md",
-    "main.ts",
-    "_locales/zh/motor-strings.json"
+    "main.ts"
   ],
   "testFiles": [
     "test.ts"
