@@ -1,55 +1,55 @@
-# DF-Driver
-
-Micro:bit motor drive expansion board.
----------------------------------------------------------
-
-## Table of Contents
-
-* [URL](#url)
-* [Summary](#summary)
-* [Blocks](#blocks)
-* [License](#license)
-
-## URL
-project URL:  ```https://github.com/DevAlvs/ServoLibraryESP```
-
-## Summary
-Micro: bit motor driven expansion board is not only expanded the motor drive, in the integration of this extended board four motor driven, 2 road, on the basis of stepper motor driver, also raises the additional 8 road steering gear interface, IO port, 2 road 9 I2C interface.
-The motor adopts the interface mode of large current, and the steering machine, I2C and IO port all use Gravity standard interface to support a large number of modules and sensors.
-The expansion board USES 3.5v ~ 5.5v power supply, 3.5mm plug and wiring two power interface modes.It has the characteristics of wide range of voltage adaption, large number of ports, compact size, plug and play, convenience and so on.
-
-## Blocks
-### 1.Servo
+# Servo Library
+ 
+Librería para controlar motores DC, motores paso a paso y servos con micro:bit.
+ 
+---
+ 
+## Índice
+ 
+* [Descripción](#descripción)
+* [Bloques disponibles](#bloques-disponibles)
+* [Licencia](#licencia)
+## Descripción
+ 
+Placa de expansión de control de motores para micro:bit. Incluye:
+- Control de **4 motores DC**
+- Control de **2 motores paso a paso** (modelos 28BYJ-48 y 42BYGH)
+- Control de **8 servos**
+- Interfaces I2C y puertos IO adicionales
+La placa funciona con una alimentación de 3.5V ~ 5.5V y utiliza el chip PCA9685 para el control por I2C.
+ 
+## Bloques disponibles
+ 
+### 1. Servo
 ![image](https://github.com/DFRobot/pxt-motor/blob/master/image/1.png)
-
-### 2.DC Motor
+ 
+### 2. Motor DC
 ![image](https://github.com/DFRobot/pxt-motor/blob/master/image/7.png)
-
-### 3.Stepper-28
+ 
+### 3. Motor Paso a Paso 28
 ![image](https://github.com/DFRobot/pxt-motor/blob/master/image/10.png)<br>
 ![image](https://github.com/DFRobot/pxt-motor/blob/master/image/2.png)
-
-### 4.Stepper-42
+ 
+### 4. Motor Paso a Paso 42
 ![image](https://github.com/DFRobot/pxt-motor/blob/master/image/8.png)<br>
 ![image](https://github.com/DFRobot/pxt-motor/blob/master/image/3.png)
-
-### 5.Dual Stepper
+ 
+### 5. Doble Motor Paso a Paso
 ![image](https://github.com/DFRobot/pxt-motor/blob/master/image/5.png)<br>
 ![image](https://github.com/DFRobot/pxt-motor/blob/master/image/9.png)
-
-### 6.Stop the motor
+ 
+### 6. Parar un motor
 ![image](https://github.com/DFRobot/pxt-motor/blob/master/image/6.png)
-
-### 7.Stop all motors
+ 
+### 7. Parar todos los motores
 ![image](https://github.com/DFRobot/pxt-motor/blob/master/image/4.png)
-
-
-## License
-
+ 
+## Licencia
+ 
 GNU
-
-## Supported targets
-
+ 
+## Plataformas compatibles
+ 
 * for PXT/microbit
 (The metadata above is needed for package search.)
 ```package
